@@ -82,18 +82,18 @@ public class RC
         m_2_B.low();
     }
 
-    private void left() throws InterruptedException {
-        System.out.println("Motor: left");
+    private void right() throws InterruptedException {
+        System.out.println("Motor: right");
         m_1_A.high();
         m_1_B.low();
-        m_2_A.high();
+        m_2_A.low();
         m_2_B.low();
     }
 
-    private void right() throws InterruptedException {
-        System.out.println("Motor: right");
+    private void left() throws InterruptedException {
+        System.out.println("Motor: left");
         m_1_A.low();
-        m_1_B.high();
+        m_1_B.low();
         m_2_A.low();
         m_2_B.high();
     }
