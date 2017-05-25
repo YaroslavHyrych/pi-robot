@@ -15,11 +15,14 @@ public class RC
     private GpioPinDigitalOutput m_2_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "MyLED", PinState.HIGH);
     private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "MyLED", PinState.HIGH);
 
-    public RC() {
+    public RC() throws InterruptedException {
         m_1_A.setShutdownOptions(true, PinState.LOW);
         m_1_B.setShutdownOptions(true, PinState.LOW);
         m_2_A.setShutdownOptions(true, PinState.LOW);
         m_2_B.setShutdownOptions(true, PinState.LOW);
+        Thread.sleep(2000);
+        this.stop();
+        Thread.sleep(2000);
     }
 
     public static void main(String[] args) throws InterruptedException {
