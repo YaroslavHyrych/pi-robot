@@ -1,0 +1,17 @@
+# front
+GPIO.output(MOTO_1_A,True)
+GPIO.output(MOTO_1_B, False)
+GPIO.output(MOTO_2_A,False)
+GPIO.output(MOTO_2_B,True)
+
+# back
+GPIO.output(MOTO_1_A,False)
+GPIO.output(MOTO_1_B, True)
+GPIO.output(MOTO_2_A,True)
+GPIO.output(MOTO_2_B, False)
+
+# return
+GPIO.output(MOTO_1_A,True)
+GPIO.output(MOTO_1_B, False)
+GPIO.output(MOTO_2_A,True)
+GPIO.output(MOTO_2_B, False)
