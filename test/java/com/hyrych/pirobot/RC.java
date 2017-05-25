@@ -20,9 +20,6 @@ public class RC
         m_1_B.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
         m_2_A.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
         m_2_B.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
-        Thread.sleep(2000);
-        this.stop();
-        Thread.sleep(2000);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -67,7 +64,6 @@ public class RC
         m_1_B.low();
         m_2_A.low();
         m_2_B.low();
-        Thread.sleep(2000);
     }
 
     private void forward() throws InterruptedException {
@@ -76,7 +72,7 @@ public class RC
         m_1_B.low();
         m_2_A.low();
         m_2_B.high();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     private void back() throws InterruptedException {
@@ -85,7 +81,7 @@ public class RC
         m_1_B.high();
         m_2_A.high();
         m_2_B.low();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     private void left() throws InterruptedException {
@@ -94,7 +90,7 @@ public class RC
         m_1_B.low();
         m_2_A.high();
         m_2_B.low();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     private void right() throws InterruptedException {
@@ -103,7 +99,7 @@ public class RC
         m_1_B.high();
         m_2_A.low();
         m_2_B.high();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     private void off() {
