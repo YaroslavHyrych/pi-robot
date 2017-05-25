@@ -22,7 +22,7 @@ public class RC
         m_2_B.setShutdownOptions(true, PinState.LOW);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         final RC motor = new RC();
 
         System.out.println("--> Init CLI");
@@ -52,47 +52,59 @@ public class RC
                     break;
                 case 'r':
                     isWorking = false;
+                    motor.off();
                     break;
             }
         }
     }
 
-    void stop() {
+    private void stop() throws InterruptedException {
+        System.out.println("Motor: stop");
         m_1_A.low();
         m_1_B.low();
         m_2_A.low();
         m_2_B.low();
+        Thread.sleep(2000);
     }
 
-    void forward() {
+    private void forward() throws InterruptedException {
+        System.out.println("Motor: forward");
         m_1_A.high();
         m_1_B.low();
         m_2_A.low();
         m_2_B.high();
+        Thread.sleep(2000);
     }
 
-    void back() {
+    private void back() throws InterruptedException {
+        System.out.println("Motor: back");
         m_1_A.low();
         m_1_B.high();
         m_2_A.high();
         m_2_B.low();
+        Thread.sleep(2000);
     }
 
-    void left() {
+    private void left() throws InterruptedException {
+        System.out.println("Motor: left");
         m_1_A.high();
         m_1_B.low();
         m_2_A.high();
         m_2_B.low();
+        Thread.sleep(2000);
     }
 
-    void right() {
+    private void right() throws InterruptedException {
+        System.out.println("Motor: right");
         m_1_A.low();
         m_1_B.high();
         m_2_A.low();
         m_2_B.high();
+        Thread.sleep(2000);
     }
 
-    void off() {
+    private void off() {
+        System.out.println("Motor: GPIO off");
         gpio.shutdown();
     }
 
