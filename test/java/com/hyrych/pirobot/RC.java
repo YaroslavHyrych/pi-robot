@@ -10,16 +10,16 @@ import java.util.Scanner;
 public class RC
 {
     private  GpioController gpio = GpioFactory.getInstance();
-    private GpioPinDigitalOutput m_1_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "MyLED", PinState.HIGH);
-    private GpioPinDigitalOutput m_1_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_18, "MyLED", PinState.HIGH);
-    private GpioPinDigitalOutput m_2_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "MyLED", PinState.HIGH);
-    private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "MyLED", PinState.HIGH);
+    private GpioPinDigitalOutput m_1_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "MyLED_1", PinState.LOW);
+    private GpioPinDigitalOutput m_1_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_18, "MyLED_2", PinState.LOW);
+    private GpioPinDigitalOutput m_2_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "MyLED_3", PinState.LOW);
+    private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "MyLED_4", PinState.LOW);
 
     public RC() throws InterruptedException {
-        m_1_A.setShutdownOptions(true, PinState.LOW);
-        m_1_B.setShutdownOptions(true, PinState.LOW);
-        m_2_A.setShutdownOptions(true, PinState.LOW);
-        m_2_B.setShutdownOptions(true, PinState.LOW);
+        m_1_A.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+        m_1_B.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+        m_2_A.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+        m_2_B.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
         Thread.sleep(2000);
         this.stop();
         Thread.sleep(2000);
