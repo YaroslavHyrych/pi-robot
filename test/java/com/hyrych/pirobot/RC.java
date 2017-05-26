@@ -10,10 +10,10 @@ import java.util.Scanner;
 public class RC
 {
     private  GpioController gpio = GpioFactory.getInstance();
-    private GpioPinDigitalOutput m_1_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "MyLED_1", PinState.LOW);
-    private GpioPinDigitalOutput m_1_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_18, "MyLED_2", PinState.LOW);
-    private GpioPinDigitalOutput m_2_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "MyLED_3", PinState.LOW);
-    private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "MyLED_4", PinState.LOW);
+    private GpioPinDigitalOutput m_1_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "MyLED_1", PinState.LOW);
+    private GpioPinDigitalOutput m_1_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "MyLED_2", PinState.LOW);
+    private GpioPinDigitalOutput m_2_A = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "MyLED_3", PinState.LOW);
+    private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "MyLED_4", PinState.LOW);
 
     public RC() throws InterruptedException {
         m_1_A.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
@@ -72,7 +72,6 @@ public class RC
         m_1_B.low();
         m_2_A.low();
         m_2_B.high();
-        Thread.sleep(5000);
     }
 
     private void back() throws InterruptedException {
@@ -81,7 +80,6 @@ public class RC
         m_1_B.high();
         m_2_A.high();
         m_2_B.low();
-        Thread.sleep(5000);
     }
 
     private void left() throws InterruptedException {
@@ -90,7 +88,6 @@ public class RC
         m_1_B.low();
         m_2_A.high();
         m_2_B.low();
-        Thread.sleep(5000);
     }
 
     private void right() throws InterruptedException {
@@ -99,7 +96,6 @@ public class RC
         m_1_B.high();
         m_2_A.low();
         m_2_B.high();
-        Thread.sleep(5000);
     }
 
     private void off() {
