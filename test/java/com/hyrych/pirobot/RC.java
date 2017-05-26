@@ -1,8 +1,9 @@
 package com.hyrych.pirobot;
 
+import com.googlecode.lanterna.TerminalFacade;
+import com.googlecode.lanterna.input.Key;
+import com.googlecode.lanterna.screen.Screen;
 import com.pi4j.io.gpio.*;
-
-import java.util.Scanner;
 
 /**
  * Created by yagy0913 on 5/25/2017.
@@ -25,41 +26,51 @@ public class RC
     public static void main(String[] args) throws InterruptedException {
         final RC motor = new RC();
 
-        System.out.println("--> Init CLI");
+        System.out.println("--> Init window");
+        Screen screen = TerminalFacade.createScreen();
+        screen.startScreen();
+        screen.clear();
 
-        Scanner sc = new Scanner(System.in);
-        boolean isWorking = true;
-        char command = 's';
+        boolean keepRunning = true;
 
-        while(isWorking) {
-            System.out.println("Enter direction:");
-            command = sc.next().charAt(0);
-            switch(command) {
-                case 's':
-                    motor.stop();
-                    break;
-                case 'w':
-                    motor.forward();
-                    break;
-                case 'a':
+        while(keepRunning) {
+            Key key = screen.readInput();
+
+            while(key == null) {
+                key = screen.readInput();
+            }
+
+            System.out.println("Key pressed:" + key.getKind().toString());
+
+            switch (key.getKind()) {
+                case ArrowLeft:
                     motor.left();
                     break;
-                case 'd':
+                case ArrowRight:
                     motor.right();
                     break;
-                case 'x':
+                case ArrowDown:
                     motor.back();
                     break;
-                case 'r':
-                    isWorking = false;
-                    motor.off();
+                case ArrowUp:
+                    motor.forward();
                     break;
+                case Escape:
+                    keepRunning = false;
+                    break;
+                case Enter:
+                    motor.stop();
+                    break;
+                default:
+                    System.out.println("Other key:" + key.getKind().toString());
             }
         }
+
+        motor.off();
+        screen.stopScreen();
     }
 
     private void stop() throws InterruptedException {
-        System.out.println("Motor: stop");
         m_1_A.low();
         m_1_B.low();
         m_2_A.low();
@@ -67,7 +78,6 @@ public class RC
     }
 
     private void forward() throws InterruptedException {
-        System.out.println("Motor: forward");
         m_1_A.high();
         m_1_B.low();
         m_2_A.low();
@@ -75,7 +85,6 @@ public class RC
     }
 
     private void back() throws InterruptedException {
-        System.out.println("Motor: back");
         m_1_A.low();
         m_1_B.high();
         m_2_A.high();
@@ -83,7 +92,6 @@ public class RC
     }
 
     private void right() throws InterruptedException {
-        System.out.println("Motor: right");
         m_1_A.high();
         m_1_B.low();
         m_2_A.low();
@@ -91,15 +99,14 @@ public class RC
     }
 
     private void left() throws InterruptedException {
-        System.out.println("Motor: left");
         m_1_A.low();
         m_1_B.low();
         m_2_A.low();
         m_2_B.high();
     }
 
-    private void off() {
-        System.out.println("Motor: GPIO off");
+    private void off() throws InterruptedException {
+        stop();
         gpio.shutdown();
     }
 
