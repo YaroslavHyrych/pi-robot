@@ -12,10 +12,10 @@ public class Port {
         System.out.println("--> Init pins");
         GpioController gpio = GpioFactory.getInstance();
         GpioPinDigitalOutput[] pins = {
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "MyLED_1", PinState.HIGH),
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_18, "MyLED_2", PinState.HIGH),
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_13, "MyLED_3", PinState.HIGH),
-                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_15, "MyLED_4", PinState.HIGH)
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "MyLED_1", PinState.HIGH),
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "MyLED_2", PinState.HIGH),
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "MyLED_3", PinState.HIGH),
+                gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "MyLED_4", PinState.HIGH)
         };
 
         System.out.println("--> Init CLI");
