@@ -172,10 +172,10 @@ public class RC
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed/2);
             } else if (prevCommand instanceof BackCommand) {
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed/2);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
             }
 
         }
