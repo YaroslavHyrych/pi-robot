@@ -139,11 +139,10 @@ public class RC
         public void go(Command prevCommand) {
             if (prevCommand == null || prevCommand instanceof StopCommand) {
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed/2);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
-            }
-            if (prevCommand instanceof ForwardCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed/2);
+            } else if (prevCommand instanceof ForwardCommand) {
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
@@ -161,12 +160,11 @@ public class RC
         @Override
         public void go(Command prevCommand) {
             if (prevCommand == null || prevCommand instanceof StopCommand) {
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed/2);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
-            }
-            if (prevCommand instanceof ForwardCommand) {
+            } else if (prevCommand instanceof ForwardCommand) {
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
                 SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
