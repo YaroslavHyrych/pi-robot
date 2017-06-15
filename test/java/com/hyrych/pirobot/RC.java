@@ -3,11 +3,9 @@ package com.hyrych.pirobot;
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.screen.Screen;
-import com.pi4j.component.motor.Motor;
 import com.pi4j.io.gpio.*;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
-import com.sun.org.apache.xml.internal.utils.Hashtree2Node;
 
 import java.util.HashMap;
 import java.util.Map;
