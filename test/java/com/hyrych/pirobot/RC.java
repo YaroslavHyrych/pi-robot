@@ -50,6 +50,7 @@ public class RC
         screen.clear();
 
         boolean keepRunning = true;
+        Command prevCommand = null;
         Command command = null;
 
         while(keepRunning) {
@@ -59,24 +60,22 @@ public class RC
                 key = screen.readInput();
             }
 
-            System.out.println("Key pressed:" + key.getKind().toString());
-
             switch (key.getKind()) {
                 case ArrowLeft:
+                    prevCommand = command;
                     command = commands.get("left");
-//                    motor.left();
                     break;
                 case ArrowRight:
+                    prevCommand = command;
                     command = commands.get("right");
-//                    motor.right();
                     break;
                 case ArrowDown:
+                    prevCommand = command;
                     command = commands.get("back");
-//                    motor.back();
                     break;
                 case ArrowUp:
+                    prevCommand = command;
                     command = commands.get("forward");
-//                    motor.forward();
                     break;
                 case Escape:
                     keepRunning = false;
@@ -88,14 +87,14 @@ public class RC
                     }
                     break;
                 case Enter:
+                    prevCommand = command;
                     command = commands.get("stop");
-//                    motor.stop();
                     break;
                 default:
                     System.out.println("Other key:" + key.getKind().toString());
             }
             if (command != null) {
-                command.go();
+                command.go(prevCommand);
             }
         }
 
@@ -112,12 +111,12 @@ public class RC
     }
 
     interface Command {
-        void go();
+        void go(Command prevCommand);
     }
 
     class ForwardCommand implements Command {
         @Override
-        public void go() {
+        public void go(Command prevCommand) {
             SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
@@ -127,7 +126,7 @@ public class RC
 
     class StopCommand implements Command {
         @Override
-        public void go() {
+        public void go(Command prevCommand) {
             SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
@@ -137,27 +136,54 @@ public class RC
 
     class LeftCommand implements Command {
         @Override
-        public void go() {
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+        public void go(Command prevCommand) {
+            if (prevCommand == null || prevCommand instanceof StopCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+            }
+            if (prevCommand instanceof ForwardCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+            } else if (prevCommand instanceof BackCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed/2);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+            }
         }
     }
 
     class RightCommand implements Command {
         @Override
-        public void go() {
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed/2);
+        public void go(Command prevCommand) {
+            if (prevCommand == null || prevCommand instanceof StopCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+            }
+            if (prevCommand instanceof ForwardCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed/2);
+            } else if (prevCommand instanceof BackCommand) {
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+                SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+            }
+
         }
     }
 
     class BackCommand implements Command {
         @Override
-        public void go() {
+        public void go(Command prevCommand) {
             SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
