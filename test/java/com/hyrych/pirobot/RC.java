@@ -90,7 +90,7 @@ public class RC
                     }
                     break;
                 case Enter:
-                    command = commands.get("stop").;
+                    command = commands.get("stop");
 //                    motor.stop();
                     break;
                 default:
