@@ -3,9 +3,14 @@ package com.hyrych.pirobot;
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.screen.Screen;
+import com.pi4j.component.motor.Motor;
 import com.pi4j.io.gpio.*;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
+import com.sun.org.apache.xml.internal.utils.Hashtree2Node;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by yagy0913 on 5/25/2017.
@@ -32,9 +37,14 @@ public class RC
     }
 
     public static void main(String[] args) throws InterruptedException {
-//        Gpio.wiringPiSetupGpio();
-
         final RC motor = new RC();
+
+        Map<String, Command> commands = new HashMap<>() ;
+        commands.put("forward", motor.new ForwardCommand());
+        commands.put("stop", motor.new StopCommand());
+        commands.put("left", motor.new LeftCommand());
+        commands.put("right", motor.new RightCommand());
+        commands.put("back", motor.new BackCommand());
 
         System.out.println("--> Init window");
         Screen screen = TerminalFacade.createScreen();
@@ -42,6 +52,7 @@ public class RC
         screen.clear();
 
         boolean keepRunning = true;
+        Command command = null;
 
         while(keepRunning) {
             Key key = screen.readInput();
@@ -54,31 +65,39 @@ public class RC
 
             switch (key.getKind()) {
                 case ArrowLeft:
-                    motor.left();
+                    command = commands.get("left");
+//                    motor.left();
                     break;
                 case ArrowRight:
-                    motor.right();
+                    command = commands.get("right");
+//                    motor.right();
                     break;
                 case ArrowDown:
-                    motor.back();
+                    command = commands.get("back");
+//                    motor.back();
                     break;
                 case ArrowUp:
-                    motor.forward();
+                    command = commands.get("forward");
+//                    motor.forward();
                     break;
                 case Escape:
                     keepRunning = false;
                     break;
                 case NormalKey:
                     int newSpeed = Character.getNumericValue(key.getCharacter());
-                    if (newSpeed <= 9) {
-                        motor.setSpeed(newSpeed);
+                    if (newSpeed > 0 && newSpeed <= 9) {
+                        motor.setSpeed(newSpeed + 1);
                     }
                     break;
                 case Enter:
-                    motor.stop();
+                    command = commands.get("stop").;
+//                    motor.stop();
                     break;
                 default:
                     System.out.println("Other key:" + key.getKind().toString());
+            }
+            if (command != null) {
+                command.go();
             }
         }
 
@@ -148,6 +167,60 @@ public class RC
     private void off() throws InterruptedException {
         stop();
         gpio.shutdown();
+    }
+
+    interface Command {
+        void go();
+    }
+
+    class ForwardCommand implements Command {
+        @Override
+        public void go() {
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+        }
+    }
+
+    class StopCommand implements Command {
+        @Override
+        public void go() {
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+        }
+    }
+
+    class LeftCommand implements Command {
+        @Override
+        public void go() {
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
+        }
+    }
+
+    class RightCommand implements Command {
+        @Override
+        public void go() {
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+        }
+    }
+
+    class BackCommand implements Command {
+        @Override
+        public void go() {
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+        }
     }
 
 }
