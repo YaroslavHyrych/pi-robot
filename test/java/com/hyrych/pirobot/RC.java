@@ -20,8 +20,6 @@ public class RC
 //    private GpioPinDigitalOutput m_2_B = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "MyLED_4", PinState.LOW);
 
     public RC() throws InterruptedException {
-        Gpio.wiringPiSetup();
-
         SoftPwm.softPwmCreate(RaspiPin.GPIO_04.getAddress(), 0, 100);
         SoftPwm.softPwmCreate(RaspiPin.GPIO_05.getAddress(), 0, 100);
         SoftPwm.softPwmCreate(RaspiPin.GPIO_02.getAddress(), 0, 100);
@@ -35,6 +33,7 @@ public class RC
 
     public static void main(String[] args) throws InterruptedException {
         final RC motor = new RC();
+        Gpio.wiringPiSetup();
 
         System.out.println("--> Init window");
         Screen screen = TerminalFacade.createScreen();
@@ -87,7 +86,7 @@ public class RC
     }
 
     private void setSpeed(int newSpeed) {
-        this.speed = newSpeed;
+        this.speed = newSpeed * 10;
     }
 
     private void stop() throws InterruptedException {
