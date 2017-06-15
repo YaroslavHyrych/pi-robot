@@ -33,7 +33,7 @@ public class RC
 
     public static void main(String[] args) throws InterruptedException {
         final RC motor = new RC();
-        Gpio.wiringPiSetup();
+        Gpio.wiringPiSetupGpio();
 
         System.out.println("--> Init window");
         Screen screen = TerminalFacade.createScreen();
