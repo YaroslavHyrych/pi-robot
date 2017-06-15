@@ -107,63 +107,7 @@ public class RC
         this.speed = newSpeed * 10;
     }
 
-    private void stop() throws InterruptedException {
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
-//        m_1_A.low();
-//        m_1_B.low();
-//        m_2_A.low();
-//        m_2_B.low();
-    }
-
-    private void forward() throws InterruptedException {
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
-//        m_1_A.high();
-//        m_1_B.low();
-//        m_2_A.low();
-//        m_2_B.high();
-    }
-
-    private void back() throws InterruptedException {
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), speed);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), speed);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
-//        m_1_A.low();
-//        m_1_B.high();
-//        m_2_A.high();
-//        m_2_B.low();
-    }
-
-    private void right() throws InterruptedException {
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
-//        m_1_A.high();
-//        m_1_B.low();
-//        m_2_A.low();
-//        m_2_B.low();
-    }
-
-    private void left() throws InterruptedException {
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-        SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
-//        m_1_A.low();
-//        m_1_B.low();
-//        m_2_A.low();
-//        m_2_B.high();
-    }
-
     private void off() throws InterruptedException {
-        stop();
         gpio.shutdown();
     }
 
@@ -194,7 +138,7 @@ public class RC
     class LeftCommand implements Command {
         @Override
         public void go() {
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed/2);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed);
@@ -207,7 +151,7 @@ public class RC
             SoftPwm.softPwmWrite(RaspiPin.GPIO_04.getAddress(), speed);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_05.getAddress(), 0);
             SoftPwm.softPwmWrite(RaspiPin.GPIO_02.getAddress(), 0);
-            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), 0);
+            SoftPwm.softPwmWrite(RaspiPin.GPIO_03.getAddress(), speed/2);
         }
     }
 
