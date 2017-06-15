@@ -32,8 +32,9 @@ public class RC
     }
 
     public static void main(String[] args) throws InterruptedException {
+//        Gpio.wiringPiSetupGpio();
+
         final RC motor = new RC();
-        Gpio.wiringPiSetupGpio();
 
         System.out.println("--> Init window");
         Screen screen = TerminalFacade.createScreen();
